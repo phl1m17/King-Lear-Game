@@ -64,7 +64,7 @@ footer {
 }
 
 canvas {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 #gameCanvas {
