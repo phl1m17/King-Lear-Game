@@ -224,7 +224,7 @@ class GameScene extends Phaser.Scene {
         }
         if (this.edmundBody){
             this.edmundBody.destroy()
-            this.edmundBody = null
+            this.edmundBody = nul
         }
         if (this.gloucesterTitle){
             this.gloucesterTitle.destroy()
@@ -570,12 +570,10 @@ class GameScene extends Phaser.Scene {
                         text.setText(this.dialogueScene[this.optionNumber - 1][this.currentContextIndex])
                         this.dialogueContainer.add([box, text, btn])
                         this.children.bringToTop(this.dialogueContainer)
-                        this.isTalking = false
                     }
                 } else {
                     this.dialogueContainer.destroy()
                     this.dialogueContainer = null
-                    this.isTalking = false
                     if (this.optionNumber === 1) {
                         this.player.setTexture("gloucesterBlind")
                     } else {
