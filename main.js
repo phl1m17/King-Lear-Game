@@ -119,12 +119,15 @@ class GameScene extends Phaser.Scene {
         }).setOrigin(0.5)
         this.playerNameTag.setDepth(3)
 
-        this.cursors = this.input.keyboard.addKeys({
+        this.cursors = this.input.keyboard.createCursorKeys()
+
+        this.wasd = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             down: Phaser.Input.Keyboard.KeyCodes.S,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D
         })
+
         
         this.setPlayerTexture()
 
@@ -195,18 +198,20 @@ class GameScene extends Phaser.Scene {
 
     update() {
         if (!this.isTalking) {
-            const { up, down, left, right } = this.cursors
+            const left = this.cursors.left.isDown || this.wasd.left.isDown 
+            const right = this.cursors.right.isDown || this.wasd.right.isDown 
+            const up = this.cursors.up.isDown || this.wasd.up.isDown 
+            const down = this.cursors.down.isDown || this.wasd.down.isDown 
             this.player.setVelocity(0)
-
-            if (up.isDown) this.player.setVelocityY(-this.playerSpeed)
-            if (down.isDown) this.player.setVelocityY(this.playerSpeed)
-            if (left.isDown) {
+            if (up) this.player.setVelocityY(-this.playerSpeed)
+            if (down) this.player.setVelocityY(this.playerSpeed)
+            if (left) {
                 this.player.setVelocityX(-this.playerSpeed)
                 if (this.mapX === 1 && this.mapY === 0 || this.mapX === 1 && this.mapY === 1) {
                     this.player.setTexture("WSLeft")
                 }
             }
-            if (right.isDown) {
+            if (right) {
                 this.player.setVelocityX(this.playerSpeed)
                 if (this.mapX === 1 && this.mapY === 0 || this.mapX === 1 && this.mapY === 1) {
                     this.player.setTexture("WSRight")
@@ -298,6 +303,9 @@ class GameScene extends Phaser.Scene {
             this.clearNPCs()
             this.loadNPCs()
             this.setPlayerTexture()
+            if (this.mapGrid[this.mapY][this.mapX] === "main") {
+                this.hasInteractedWith.clear()
+            }
         }
     }
 
@@ -429,7 +437,6 @@ class GameScene extends Phaser.Scene {
                 this.dialogueContainer.destroy()
                 this.dialogueContainer = null
                 this.isTalking = false
-                this.player.setTexture("gloucesterBlind")
                 this.startOptions()
             })
         }
@@ -580,6 +587,34 @@ class GameScene extends Phaser.Scene {
             this.dialogueContainer.add([box, this.speechText, btn])
             this.dialogueContainer.setDepth(4)
             this.children.bringToTop(this.dialogueContainer)
+        } else {
+            this.speechText = this.add.text(0, -20, `${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`, {
+                fontSize: "20px",
+                color: "#ffffff",
+                align: "center",
+                wordWrap: { width: 500 }
+            }).setOrigin(0.5)
+
+            const btn = this.add.text(0, 40, "Continue", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 12, y: 6 }
+            }).setOrigin(0.5).setInteractive()
+
+            btn.on("pointerdown", () => {
+                this.currentSpeechIndex++
+                if (this.currentSpeechIndex < speechLines.length) {
+                    this.speechText.setText(`${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`)
+                } else {
+                    this.dialogueContainer.destroy()
+                    this.dialogueContainer = null
+                    this.isTalking = false
+                }
+            })
+            this.dialogueContainer.add([box, this.speechText, btn])
+            this.dialogueContainer.setDepth(4)
+            this.children.bringToTop(this.dialogueContainer)
         }
     }
 
@@ -591,6 +626,14 @@ class GameScene extends Phaser.Scene {
         if (this.dialogueContainer) {
             this.dialogueContainer.destroy()
             this.dialogueContainer = null
+            if (this.mapX === 2) {
+                if (optionNumber === 1) {
+                    this.player.setTexture("gloucesterBlind")
+                } else {
+                    this.player.setTexture("gloucester")
+                }
+                
+            } 
             this.startSpeech(optionNumber)
         }
 
