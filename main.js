@@ -43,7 +43,7 @@ class GameScene extends Phaser.Scene {
                 "whose opening soliloquy reveals his bitterness, ambition,", 
                 "and determination to overturn the social stigma of being a bastard"],
             null,
-            ["blAH blAH BLAH CONTEXT 1 for ACT 3 SCENE 7", "blAH blAH BLAH CONTEXT 2 for ACT 3 SCENE 7"]
+            ["Gloucester was captured by Regan at his manor for aiding in King Lear’s escape."]
         ]
 
         this.hintText = null
@@ -51,9 +51,9 @@ class GameScene extends Phaser.Scene {
         this.choice = {}
 
         this.ending = [['Some filler text about Edmund goes here for option 1.', 
-                            'Some filler text about Edmund goes here for option 2.'],
+                            'Edmund, who is now supporting the rest of his family to fight against nature and uphold tradition, used his cunning nature to manipulate Regan and Goneril would have been betrayed and killed for their tyranny. King Lear would have been able to reconcile with Cordelia allowing for her to cede power, but Edgar was the one who remained as the heir in the end. '],
                         ['Some filler text about Gloucester goes here for option 1.', 
-                            'Some filler text about Gloucester goes here for option 2.']]
+                            'Gloucester, who is now working as a double agent for Regan and Goneril in order to gain more power and influence, would have used deceit to trick his son, Edgar, and Cordelia into traps, killing them both and soon after would have killed King Lear. Gloucester is rewarded personally for his troubles, but ends up assassinated by his son Edmund.']]
 
         this.speechLines = [
             ["Nature, you are my goddess,\nand I pledge my loyalty to you.",
@@ -81,6 +81,54 @@ class GameScene extends Phaser.Scene {
             "For I will shatter the cruel indifference of nature",
             "Now gods stand up-- for I will dance with the absurd"]
         ]
+        this.dialogueScene = [
+            ["Regan: Tie the traitor up.",
+            "Gloucester: I’m no traitor, you merciless lady.",
+            "Regan: What letters from France have you come upon recently?",
+            "And what relationship do you have with the traitors", 
+            "who have entered our kingdom recently?",
+            "Be honest, we already know the truth.","",
+            "Gloucester: I’ve only received a vague letter from a neutral",
+            "source someone who is not opposed to you.",
+            "Regan: A cunning and false answer.",
+            "Where have you sent the king?",
+            "Gloucester: To Dover.",
+            "Regan: Why to Dover?",
+            "Gloucester: Because I didn’t want your cruel fingers to touch him.",
+            "You forced such an old man to endure the harsh storms, yet the poor man",
+            "could only contribute to the storm with his weeping.",
+            "Even the most cruel of people would have shown mercy, but you did not.",
+            "You will be punished by vengeance in the end, you cruel child.",
+            "Gloucester: My folly led me to betray my son—oh Edgar,",
+            "please forgive your pitiful father. Gods forgive me and let him prosper!" ],
+            ["Regan: Tie the traitor up.",
+            "Gloucester: I’m no traitor, you merciless lady.",
+            "Regan: What letters from France have you come upon recently?",
+            "And what relationship do you have with the traitors", 
+            "who have entered our kingdom recently?",
+            "Be honest, we already know the truth.","",
+            "Gloucester: hah.. They are from Cordelia and the French monarch,",
+            "they planned on invading Britain, and I planned to conspire with them.",
+            "Regan: Such honesty, I'm tryly surpried.",
+            "Gloucester: since I was upfront.. will you allow me to aid me in your quest?",
+            "If you let me live, my connections to Cordelia may prove useful.",
+            "And to prove my 'loyalty' to you,",
+            "I will tell you myself that I sent Lear to Dover",
+            "Regan: Before I answer your question,",
+            "I'll need you to answer another of mine.",
+            "Why did you send Lear to Dover",
+            "Gloucester: I merely thought it would have been safe for him",
+            "Regan: A barren answer, but perhaps you may show some value Gloucester",
+            "Gloucester: Oh nature my goddess, I was a fool to forsake you.",
+            "Only by throwing away the man made traditions that impede you path,", 
+            "I was able to come unscathed.",
+            "Nature you are indifferent to all,",
+            "but I shall play your game.", 
+            "Survival belongs to the fit,",
+            "not to the one whose heart is a slave to loyalty"
+            ] // 19 & 25
+        ] 
+        this.optionNumber = 1
 
         this.edmundTitle
         this.edmundBody
@@ -189,10 +237,10 @@ class GameScene extends Phaser.Scene {
 
         if (this.mapX === 1 && this.mapY === 1) {
             this.edmundTitle = this.add.text(100, 100, 'Edmund', { fontSize: '32px', color: '#ffffff' })  
-            this.edmundBody = this.add.text(100, 140, this.ending[0][this.choice[0] - 1], { fontSize: '20px', color: '#cccccc', wordWrap: { width: 300 } })  
+            this.edmundBody = this.add.text(100, 140, this.ending[0][this.choice[0] - 1], { fontSize: '20px', color: '#cccccc', wordWrap: { width: 400 } })  
 
             this.gloucesterTitle = this.add.text(500, 100, 'Gloucester', { fontSize: '32px', color: '#ffffff' })  
-            this.gloucesterBody = this.add.text(500, 140, this.ending[1][this.choice[2] - 1], { fontSize: '20px', color: '#cccccc', wordWrap: { width: 300 } })  
+            this.gloucesterBody = this.add.text(500, 140, this.ending[1][this.choice[2] - 1], { fontSize: '20px', color: '#cccccc', wordWrap: { width: 400 } })  
         }
     }
 
@@ -331,7 +379,6 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-
     clearNPCs() {
         if (!this.npcList) return 
         this.npcList.forEach(npc => {
@@ -370,74 +417,6 @@ class GameScene extends Phaser.Scene {
                     }).setOrigin(0.5)
                     npc.label = label
                 }
-            })
-        }
-    }
-
-    startDialogue(npc) {
-        this.isTalking = true
-        this.hasInteractedWith.add(npc.name)
-        this.player.setVelocity(0)
-
-        if (this.dialogueContainer) this.dialogueContainer.destroy()
-
-        if (npc.name !== "chair") {
-            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 2)
-
-            const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7)
-            const text = this.add.text(0, -30, `${npc.name.toUpperCase()}: Hello, ${this.playerNameTag.text}.`, {
-                fontSize: "20px",
-                color: "#ffffff",
-                align: "center",
-                wordWrap: { width: 380 }
-            }).setOrigin(0.5)
-
-            const btn = this.add.text(0, 25, "Continue", {
-                fontSize: "18px",
-                backgroundColor: "#ffffff",
-                color: "#000000",
-                padding: { x: 10, y: 5 }
-            }).setOrigin(0.5).setInteractive()
-
-            this.dialogueContainer.add([box, text, btn])
-            this.children.bringToTop(this.dialogueContainer)
-
-            btn.on("pointerdown", () => {
-                this.dialogueContainer.destroy()
-                this.dialogueContainer = null
-                this.isTalking = false
-            })
-        }
-        else {
-            this.player.setPosition(sizes.width / 2 - 3, sizes.height / 2)
-            this.player.setTexture("gloucesterSit")
-
-            this.hasInteractedWith.add("regan")
-            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 2)
-
-            const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7)
-            const text = this.add.text(0, -30, "Regan: Hello, Gloucester.", {
-                fontSize: "20px",
-                color: "#ffffff",
-                align: "center",
-                wordWrap: { width: 380 }
-            }).setOrigin(0.5)
-
-            const btn = this.add.text(0, 25, "Continue", {
-                fontSize: "18px",
-                backgroundColor: "#ffffff",
-                color: "#000000",
-                padding: { x: 10, y: 5 }
-            }).setOrigin(0.5).setInteractive()
-
-            this.dialogueContainer.add([box, text, btn])
-            this.children.bringToTop(this.dialogueContainer)
-
-            btn.on("pointerdown", () => {
-                this.dialogueContainer.destroy()
-                this.dialogueContainer = null
-                this.isTalking = false
-                this.startOptions()
             })
         }
     }
@@ -481,12 +460,137 @@ class GameScene extends Phaser.Scene {
         this.children.bringToTop(this.dialogueContainer)
         this.dialogueContainer.setDepth(4)
     }
+    
+    startSpeech(optionNumber) {
+        this.currentSpeechIndex = 0
 
-    startOptions() {
+        if (this.dialogueContainer) {
+            this.dialogueContainer.destroy()
+        }
+
+        this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6)
+        const speechLines = this.speechLines[optionNumber - 1]
+        const box = this.add.rectangle(0, 0, 600, 130, 0x000000, 0.7)
+
+        this.speechText = this.add.text(0, -20, `${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`, {
+            fontSize: "20px",
+            color: "#ffffff",
+            align: "center",
+            wordWrap: { width: 500 }
+        }).setOrigin(0.5)
+        const btn = this.add.text(0, 40, "Continue", {
+            fontSize: "18px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            padding: { x: 12, y: 6 }
+        }).setOrigin(0.5).setInteractive()
+        btn.on("pointerdown", () => {
+            this.currentSpeechIndex++
+            if (this.currentSpeechIndex < speechLines.length) {
+                this.speechText.setText(`${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`)
+            } else {
+                this.dialogueContainer.destroy()
+                this.dialogueContainer = null
+                this.isTalking = false
+            }
+        })
+        this.dialogueContainer.add([box, this.speechText, btn])
+        this.dialogueContainer.setDepth(4)
+        this.children.bringToTop(this.dialogueContainer)
+    }
+
+    startDialogue(npc) {
+        this.isTalking = true
+        this.hasInteractedWith.add(npc.name)
+        this.player.setVelocity(0)
+
         if (this.dialogueContainer) this.dialogueContainer.destroy()
 
-        this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height * 4 / 5)
-        this.dialogueContainer.setDepth(4)
+        if (npc.name !== "chair") {
+            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6)
+
+            const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7)
+            const text = this.add.text(0, -30, "Regan: Hello Gloucester", {
+                fontSize: "20px",
+                color: "#ffffff",
+                align: "center",
+                wordWrap: { width: 380 }
+            }).setOrigin(0.5)
+
+            const btn = this.add.text(0, 25, "Continue", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 10, y: 5 }
+            }).setOrigin(0.5).setInteractive()
+
+            this.dialogueContainer.add([box, text, btn])
+            this.children.bringToTop(this.dialogueContainer)
+
+            btn.on("pointerdown", () => {
+                this.dialogueContainer.destroy()
+                this.dialogueContainer = null
+                this.isTalking = false
+            })
+        }
+        else {
+            const dialogueScene = this.dialogueScene[this.optionNumber - 1]
+            this.player.setPosition(sizes.width / 2 - 7, sizes.height / 2)
+            this.player.setTexture("gloucesterSit")
+
+            this.hasInteractedWith.add("regan")
+            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6)
+            this.currentContextIndex = 0
+
+            const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7)
+            const text = this.add.text(0, -30, this.dialogueScene[0][0], {
+                fontSize: "20px",
+                color: "#ffffff",
+                align: "center",
+                wordWrap: { width: 380 }
+            }).setOrigin(0.5)
+
+            const btn = this.add.text(0, 25, "Continue", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 10, y: 5 }
+            }).setOrigin(0.5).setInteractive()
+
+            this.dialogueContainer.add([box, text, btn])
+            this.children.bringToTop(this.dialogueContainer)
+
+            btn.on("pointerdown", () => {
+                this.currentContextIndex++
+                if (this.currentContextIndex < dialogueScene.length) {
+                    text.setText(this.dialogueScene[this.optionNumber - 1][this.currentContextIndex])
+                    if (this.currentContextIndex === 6) {
+                        this.startOptions()
+                    } else {
+                        text.setText(this.dialogueScene[this.optionNumber - 1][this.currentContextIndex])
+                        this.dialogueContainer.add([box, text, btn])
+                        this.children.bringToTop(this.dialogueContainer)
+                        this.isTalking = false
+                    }
+                } else {
+                    this.dialogueContainer.destroy()
+                    this.dialogueContainer = null
+                    this.isTalking = false
+                    if (this.optionNumber === 1) {
+                        this.player.setTexture("gloucesterBlind")
+                    } else {
+                        this.player.setTexture("gloucester")
+                    }
+                }
+            })
+        }
+    }
+
+    startOptions() {
+        if (this.optionContainer) this.optionContainer.destroy()
+            
+        this.optionContainer = this.add.container(sizes.width / 2, sizes.height * 4 / 5)
+        this.optionContainer.setDepth(4)
         const box = this.add.rectangle(0, 0, 500, 100, 0x000000, 0.7)
 
         const prompt = this.add.text(0, -20, "Choose your response:", {
@@ -516,12 +620,11 @@ class GameScene extends Phaser.Scene {
 
             option2.on("pointerdown", () => {
                 this.handleOption(2)
-                console.log(this.choice)
             })
-            this.dialogueContainer.add([box, prompt, option1, option2])
-            this.children.bringToTop(this.dialogueContainer)
-        } else {
-            const option1 = this.add.text(-100, 30, "Option 1", {
+            this.optionContainer.add([box, prompt, option1, option2])
+            this.children.bringToTop(this.optionContainer)
+        }   else if (this.mapX === 2 && this.mapY === 0) {
+            const option1 = this.add.text(-100, 30, "Side with Society", {
                 fontSize: "18px",
                 backgroundColor: "#ffffff",
                 color: "#000000",
@@ -532,7 +635,7 @@ class GameScene extends Phaser.Scene {
                 this.handleOption(1)
             })
 
-            const option2 = this.add.text(100, 30, "Option 2", {
+            const option2 = this.add.text(100, 30, "Side with Nature", {
                 fontSize: "18px",
                 backgroundColor: "#ffffff",
                 color: "#000000",
@@ -543,97 +646,21 @@ class GameScene extends Phaser.Scene {
                 this.handleOption(2)
                 console.log(this.choice)
             })
-            this.dialogueContainer.add([box, prompt, option1, option2])
-            this.children.bringToTop(this.dialogueContainer)
-        }
-    }
-    
-    startSpeech(optionNumber) {
-        this.currentSpeechIndex = 0
-
-        if (this.dialogueContainer) {
-            this.dialogueContainer.destroy()
-        }
-
-        this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6)
-        const speechLines = this.speechLines[optionNumber - 1]
-        const box = this.add.rectangle(0, 0, 600, 130, 0x000000, 0.7)
-
-        if (this.mapX === 0) {
-            this.speechText = this.add.text(0, -20, `${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`, {
-                fontSize: "20px",
-                color: "#ffffff",
-                align: "center",
-                wordWrap: { width: 500 }
-            }).setOrigin(0.5)
-
-            const btn = this.add.text(0, 40, "Continue", {
-                fontSize: "18px",
-                backgroundColor: "#ffffff",
-                color: "#000000",
-                padding: { x: 12, y: 6 }
-            }).setOrigin(0.5).setInteractive()
-
-            btn.on("pointerdown", () => {
-                this.currentSpeechIndex++
-                if (this.currentSpeechIndex < speechLines.length) {
-                    this.speechText.setText(`${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`)
-                } else {
-                    this.dialogueContainer.destroy()
-                    this.dialogueContainer = null
-                    this.isTalking = false
-                }
-            })
-            this.dialogueContainer.add([box, this.speechText, btn])
-            this.dialogueContainer.setDepth(4)
-            this.children.bringToTop(this.dialogueContainer)
-        } else {
-            this.speechText = this.add.text(0, -20, `${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`, {
-                fontSize: "20px",
-                color: "#ffffff",
-                align: "center",
-                wordWrap: { width: 500 }
-            }).setOrigin(0.5)
-
-            const btn = this.add.text(0, 40, "Continue", {
-                fontSize: "18px",
-                backgroundColor: "#ffffff",
-                color: "#000000",
-                padding: { x: 12, y: 6 }
-            }).setOrigin(0.5).setInteractive()
-
-            btn.on("pointerdown", () => {
-                this.currentSpeechIndex++
-                if (this.currentSpeechIndex < speechLines.length) {
-                    this.speechText.setText(`${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`)
-                } else {
-                    this.dialogueContainer.destroy()
-                    this.dialogueContainer = null
-                    this.isTalking = false
-                }
-            })
-            this.dialogueContainer.add([box, this.speechText, btn])
-            this.dialogueContainer.setDepth(4)
-            this.children.bringToTop(this.dialogueContainer)
+            this.optionContainer.add([box, prompt, option1, option2])
+            this.children.bringToTop(this.optionContainer)
         }
     }
 
     handleOption(optionNumber) {
         this.choice[this.mapX] = optionNumber
+        this.optionNumber = optionNumber
 
-        console.log(this.choice)
+        if (this.optionContainer) {
+            this.optionContainer.destroy()
+            this.optionContainer = null
+        }
 
-        if (this.dialogueContainer) {
-            this.dialogueContainer.destroy()
-            this.dialogueContainer = null
-            if (this.mapX === 2) {
-                if (optionNumber === 1) {
-                    this.player.setTexture("gloucesterBlind")
-                } else {
-                    this.player.setTexture("gloucester")
-                }
-                
-            } 
+        if (this.mapX === 0) {
             this.startSpeech(optionNumber)
         }
 
