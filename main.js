@@ -39,7 +39,9 @@ class GameScene extends Phaser.Scene {
         this.lock = true
 
         this.context = [
-            ["blAH blAH BLAH CONTEXT 1 for ACT 1 SCENE 2", "blAH blAH BLAH CONTEXT 2 for ACT 1 SCENE 2"],
+            ["In the second scene of the play, we are introduced to Edmund,", 
+                "whose opening soliloquy reveals his bitterness, ambition,", 
+                "and determination to overturn the social stigma of being a bastard"],
             null,
             ["blAH blAH BLAH CONTEXT 1 for ACT 3 SCENE 7", "blAH blAH BLAH CONTEXT 2 for ACT 3 SCENE 7"]
         ]
@@ -52,6 +54,33 @@ class GameScene extends Phaser.Scene {
                             'Some filler text about Edmund goes here for option 2.'],
                         ['Some filler text about Gloucester goes here for option 1.', 
                             'Some filler text about Gloucester goes here for option 2.']]
+
+        this.speechLines = [
+            ["Nature, you are my goddess,\nand I pledge my loyalty to you.",
+            "The traditions of the kingdom held me back\nfrom being a son and heir.",
+            "Merely because I was born out of wedlock?\nI was born this way—how truly terrible.",
+            "Why do they all call me a bastard and a base?\nBecause I was born this way?",
+            "Even though I am both\nphysically and mentally strong.",
+            "Those born in the lusty stealth of nature\nare superior to those from boring, stuffy marriages.",
+            "Edgar… you are legitimate?\nWhat a fine word—'legitimate'.",
+            "But Edgar, I will take your land and your name.\nFather’s love is mine.",
+            "And this thing 'legitimate'—what a hollow thing.",
+            "I shall take and shatter it.",
+            "Now, gods, stand up for the bastard."],
+            ["Nature you are a cruel goddess",
+            "I despise you for making me this way",
+            "Forcing me to be born out of a wedlock,", 
+            "And playing second fiddle to Edgar",
+            "You benefit those with fortune and are indifferent to the rest",
+            "You gift the might of a horse and the intellect of a genius to cretins who know nothing of noblesse oblige", 
+            "The peasants on the street have done nothing,",
+            "But cruel nobles can abandon all virtue and remain atop the mountains summit",
+            "Absolutely detestable, why should I accept that?",
+            "Edgar.. Father, I can sense loyalty in your blood and goodness in your essence",
+            "I shall help you two if needed",
+            "For I will shatter the cruel indifference of nature",
+            "Now gods stand up-- for I will dance with the absurd"]
+        ]
 
         this.edmundTitle
         this.edmundBody
@@ -414,15 +443,15 @@ class GameScene extends Phaser.Scene {
         this.currentContextIndex = 0
         this.dialogueContainer = this.add.container(sizes.width / 2, 100)
 
-        const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7)
-        const contextText = this.add.text(0, -30, this.context[scene][0], {
+        const box = this.add.rectangle(0, 0, 550, 140, 0x000000, 0.7)
+        const contextText = this.add.text(0, -25, this.context[scene][0], {
             fontSize: "20px",
             color: "#ffffff",
             align: "center",
             wordWrap: { width: 380 }
         }).setOrigin(0.5)
 
-        const btn = this.add.text(0, 25, "Continue", {
+        const btn = this.add.text(0, 35, "Continue", {
             fontSize: "18px",
             backgroundColor: "#ffffff",
             color: "#000000",
@@ -451,40 +480,107 @@ class GameScene extends Phaser.Scene {
 
         this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height * 4 / 5)
         this.dialogueContainer.setDepth(4)
-        const box = this.add.rectangle(0, 0, 500, 200, 0x000000, 0.7)
+        const box = this.add.rectangle(0, 0, 500, 100, 0x000000, 0.7)
 
-        const prompt = this.add.text(0, -60, "Choose your response:", {
+        const prompt = this.add.text(0, -20, "Choose your response:", {
             fontSize: "22px",
             color: "#ffffff",
             align: "center",
             wordWrap: { width: 480 }
         }).setOrigin(0.5)
+        if (this.mapX === 0) {
+            const option1 = this.add.text(-110, 10, "Side With Nature", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 10, y: 5 }
+            }).setOrigin(0.5).setInteractive()
 
-        const option1 = this.add.text(-100, 30, "Option 1", {
-            fontSize: "18px",
-            backgroundColor: "#ffffff",
-            color: "#000000",
-            padding: { x: 10, y: 5 }
-        }).setOrigin(0.5).setInteractive()
+            option1.on("pointerdown", () => {
+                this.handleOption(1)
+            })
 
-        option1.on("pointerdown", () => {
-            this.handleOption(1)
-        })
+            const option2 = this.add.text(110, 10, "Side With Society", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 10, y: 5 }
+            }).setOrigin(0.5).setInteractive()
 
-        const option2 = this.add.text(100, 30, "Option 2", {
-            fontSize: "18px",
-            backgroundColor: "#ffffff",
-            color: "#000000",
-            padding: { x: 10, y: 5 }
-        }).setOrigin(0.5).setInteractive()
+            option2.on("pointerdown", () => {
+                this.handleOption(2)
+                console.log(this.choice)
+            })
+            this.dialogueContainer.add([box, prompt, option1, option2])
+            this.children.bringToTop(this.dialogueContainer)
+        } else {
+            const option1 = this.add.text(-100, 30, "Option 1", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 10, y: 5 }
+            }).setOrigin(0.5).setInteractive()
 
-        option2.on("pointerdown", () => {
-            this.handleOption(2)
-            console.log(this.choice)
-        })
+            option1.on("pointerdown", () => {
+                this.handleOption(1)
+            })
 
-        this.dialogueContainer.add([box, prompt, option1, option2])
-        this.children.bringToTop(this.dialogueContainer)
+            const option2 = this.add.text(100, 30, "Option 2", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 10, y: 5 }
+            }).setOrigin(0.5).setInteractive()
+
+            option2.on("pointerdown", () => {
+                this.handleOption(2)
+                console.log(this.choice)
+            })
+            this.dialogueContainer.add([box, prompt, option1, option2])
+            this.children.bringToTop(this.dialogueContainer)
+        }
+    }
+    
+    startSpeech(optionNumber) {
+        this.currentSpeechIndex = 0
+
+        if (this.dialogueContainer) {
+            this.dialogueContainer.destroy()
+        }
+
+        this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6)
+        const speechLines = this.speechLines[optionNumber - 1]
+        const box = this.add.rectangle(0, 0, 600, 130, 0x000000, 0.7)
+
+        if (this.mapX === 0) {
+            this.speechText = this.add.text(0, -20, `${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`, {
+                fontSize: "20px",
+                color: "#ffffff",
+                align: "center",
+                wordWrap: { width: 500 }
+            }).setOrigin(0.5)
+
+            const btn = this.add.text(0, 40, "Continue", {
+                fontSize: "18px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                padding: { x: 12, y: 6 }
+            }).setOrigin(0.5).setInteractive()
+
+            btn.on("pointerdown", () => {
+                this.currentSpeechIndex++
+                if (this.currentSpeechIndex < speechLines.length) {
+                    this.speechText.setText(`${this.playerNameTag.text}: ${speechLines[this.currentSpeechIndex]}`)
+                } else {
+                    this.dialogueContainer.destroy()
+                    this.dialogueContainer = null
+                    this.isTalking = false
+                }
+            })
+            this.dialogueContainer.add([box, this.speechText, btn])
+            this.dialogueContainer.setDepth(4)
+            this.children.bringToTop(this.dialogueContainer)
+        }
     }
 
     handleOption(optionNumber) {
@@ -495,6 +591,7 @@ class GameScene extends Phaser.Scene {
         if (this.dialogueContainer) {
             this.dialogueContainer.destroy()
             this.dialogueContainer = null
+            this.startSpeech(optionNumber)
         }
 
         if (Object.keys(this.choice).filter(k => this.choice[k] != null).length === 2) {
