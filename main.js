@@ -164,7 +164,7 @@ class GameScene extends Phaser.Scene {
             this.chair = null
         }
         
-        if(this.mapX === 2 && this.mapY === 0) {
+        if (this.mapX === 2 && this.mapY === 0) {
             this.chair = this.physics.add.image(sizes.width / 2, sizes.height / 2, "chair")
             this.chair.setImmovable(true)
             this.chair.body.allowGravity = false
@@ -473,7 +473,7 @@ class GameScene extends Phaser.Scene {
                 this.dialogueContainer.destroy()
                 this.dialogueContainer = null
                 this.isTalking = false
-                if(this.mapX === 0) this.startOptions()
+                if (this.mapX === 0) this.startOptions()
             }
         })
 
