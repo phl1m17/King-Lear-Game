@@ -224,7 +224,7 @@ class GameScene extends Phaser.Scene {
         }
         if (this.edmundBody){
             this.edmundBody.destroy()
-            this.edmundBody = nul
+            this.edmundBody = null
         }
         if (this.gloucesterTitle){
             this.gloucesterTitle.destroy()
