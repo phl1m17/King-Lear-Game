@@ -50,9 +50,9 @@ class GameScene extends Phaser.Scene {
 
         this.choice = {}
 
-        this.ending = [['Some filler text about Edmund goes here for option 1.', 
-                            'Edmund, who is now supporting the rest of his family to fight against nature and uphold tradition, used his cunning nature to manipulate Regan and Goneril would have been betrayed and killed for their tyranny. King Lear would have been able to reconcile with Cordelia allowing for her to cede power, but Edgar was the one who remained as the heir in the end. '],
-                        ['Some filler text about Gloucester goes here for option 1.', 
+        this.ending = [['Edmund ends up conspiring with Regan and Gonerli and ends up betraying his father and king Lear. He uses cunning schemes to trap his father and has Cornwall blind him.', 
+                            'Edmund, who is now supporting the rest of his family to fight against nature and uphold tradition, used his cunning nature to manipulate Regan and Goneril into false consipracy and betrayed them for their tyranny. King Lear would have been able to reconcile with Cordelia allowing for her to cede power, but Edgar was the one who remained as the heir in the end. '],
+                        ['The now blinded Gloucester is thrusted into pure despair and attempts suicide. Gloucester is miraculously saved, and takes this as the gods sign to keep on living in despair of the cruel world he finds himself in.', 
                             'Gloucester, who is now working as a double agent for Regan and Goneril in order to gain more power and influence, would have used deceit to trick his son, Edgar, and Cordelia into traps, killing them both and soon after would have killed King Lear. Gloucester is rewarded personally for his troubles, but ends up assassinated by his son Edmund.']]
 
         this.speechLines = [
@@ -109,8 +109,8 @@ class GameScene extends Phaser.Scene {
             "Be honest, we already know the truth.","",
             "Gloucester: hah.. They are from Cordelia and the French monarch,",
             "they planned on invading Britain, and I planned to conspire with them.",
-            "Regan: Such honesty, I'm tryly surpried.",
-            "Gloucester: since I was upfront.. will you allow me to aid me in your quest?",
+            "Regan: Such honesty, I'm truly surpried.",
+            "Gloucester: since I was upfront.. will you allow me to aid you in your quest?",
             "If you let me live, my connections to Cordelia may prove useful.",
             "And to prove my 'loyalty' to you,",
             "I will tell you myself that I sent Lear to Dover",
@@ -126,7 +126,7 @@ class GameScene extends Phaser.Scene {
             "but I shall play your game.", 
             "Survival belongs to the fit,",
             "not to the one whose heart is a slave to loyalty"
-            ] // 19 & 25
+            ]
         ] 
         this.optionNumber = 1
 
