@@ -542,12 +542,12 @@ class GameScene extends Phaser.Scene {
             this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6)
             this.currentContextIndex = 0
 
-            const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7)
-            const text = this.add.text(0, -30, this.dialogueScene[0][0], {
+            const box = this.add.rectangle(0, 0, 520, 120, 0x000000, 0.7)
+            const text = this.add.text(5, -30, this.dialogueScene[0][0], {
                 fontSize: "20px",
                 color: "#ffffff",
                 align: "center",
-                wordWrap: { width: 380 }
+                wordWrap: { width: 500 }
             }).setOrigin(0.5)
 
             const btn = this.add.text(0, 25, "Continue", {
@@ -623,7 +623,7 @@ class GameScene extends Phaser.Scene {
             this.optionContainer.add([box, prompt, option1, option2])
             this.children.bringToTop(this.optionContainer)
         }   else if (this.mapX === 2 && this.mapY === 0) {
-            const option1 = this.add.text(-100, 30, "Side with Society", {
+            const option1 = this.add.text(-100, 20, "Side with Society", {
                 fontSize: "18px",
                 backgroundColor: "#ffffff",
                 color: "#000000",
@@ -634,7 +634,7 @@ class GameScene extends Phaser.Scene {
                 this.handleOption(1)
             })
 
-            const option2 = this.add.text(100, 30, "Side with Nature", {
+            const option2 = this.add.text(100, 20, "Side with Nature", {
                 fontSize: "18px",
                 backgroundColor: "#ffffff",
                 color: "#000000",
