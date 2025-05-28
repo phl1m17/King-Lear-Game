@@ -579,6 +579,7 @@ class GameScene extends Phaser.Scene {
                     } else {
                         this.player.setTexture("gloucester")
                     }
+                    this.isTalking = false
                 }
             })
         }
