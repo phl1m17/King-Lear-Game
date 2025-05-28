@@ -355,6 +355,11 @@ class GameScene extends Phaser.Scene {
                 this.hasInteractedWith.clear()
             }
         }
+
+        if (this.optionContainer && this.mapX === 1) {
+            this.optionContainer.destroy()
+            this.optionContainer = null
+        }
     }
 
     setPlayerTexture() {
@@ -591,6 +596,7 @@ class GameScene extends Phaser.Scene {
         this.optionContainer = this.add.container(sizes.width / 2, sizes.height * 4 / 5)
         this.optionContainer.setDepth(4)
         const box = this.add.rectangle(0, 0, 500, 100, 0x000000, 0.7)
+        
 
         const prompt = this.add.text(0, -20, "Choose your response:", {
             fontSize: "22px",
