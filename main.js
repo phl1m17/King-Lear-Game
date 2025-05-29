@@ -505,162 +505,162 @@ class GameScene extends Phaser.Scene {
     }
 
     startDialogue(npc) {
-        this.isTalking = true;
-        this.hasInteractedWith.add(npc.name);
-        this.player.setVelocity(0);
+        this.isTalking = true 
+        this.hasInteractedWith.add(npc.name) 
+        this.player.setVelocity(0) 
 
-        if (this.dialogueContainer) this.dialogueContainer.destroy();
+        if (this.dialogueContainer) this.dialogueContainer.destroy() 
 
         if (npc.name === "edmund") {
-            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6);
+            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6) 
 
-            const box = this.add.rectangle(0, 0, 600, 130, 0x000000, 0.7);
+            const box = this.add.rectangle(0, 0, 600, 130, 0x000000, 0.7) 
             const text = this.add.text(0, -20, "Edmund: ...", {
                 fontSize: "20px",
                 color: "#ffffff",
                 align: "center",
                 wordWrap: { width: 500 }
-            }).setOrigin(0.5);
+            }).setOrigin(0.5) 
 
             const btn = this.add.text(0, 40, "Continue", {
                 fontSize: "18px",
                 backgroundColor: "#ffffff",
                 color: "#000000",
                 padding: { x: 12, y: 6 }
-            }).setOrigin(0.5).setInteractive();
+            }).setOrigin(0.5).setInteractive() 
 
-            this.dialogueContainer.add([box, text, btn]);
-            this.children.bringToTop(this.dialogueContainer);
+            this.dialogueContainer.add([box, text, btn]) 
+            this.children.bringToTop(this.dialogueContainer) 
 
-            let contextIndex = 0;
-            const context = this.context[0];
-            text.setText(context[contextIndex]);
+            let contextIndex = 0 
+            const context = this.context[0] 
+            text.setText(context[contextIndex]) 
 
             btn.on("pointerdown", () => {
-                contextIndex++;
+                contextIndex++ 
                 if (contextIndex < context.length) {
-                    text.setText(context[contextIndex]);
+                    text.setText(context[contextIndex]) 
                 } else {
-                    this.dialogueContainer.destroy();
-                    this.dialogueContainer = null;
-                    this.isTalking = false;
-                    this.startOptions();
+                    this.dialogueContainer.destroy() 
+                    this.dialogueContainer = null 
+                    this.isTalking = false 
+                    this.startOptions() 
                 }
-            });
-            return;
+            }) 
+            return 
         }
 
         if (npc.name === "chair") {
-            this.player.setPosition(sizes.width / 2 - 7, sizes.height / 2);
-            this.player.setTexture("gloucesterSit");
-            this.hasInteractedWith.add("regan");
-            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6);
-            let dialogueIndex = 0;
-            let afterChoice = false;
-            let branch = null;
+            this.player.setPosition(sizes.width / 2 - 7, sizes.height / 2) 
+            this.player.setTexture("gloucesterSit") 
+            this.hasInteractedWith.add("regan") 
+            this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6) 
+            let dialogueIndex = 0 
+            let afterChoice = false 
+            let branch = null 
 
-            const box = this.add.rectangle(0, 0, 520, 120, 0x000000, 0.7);
+            const box = this.add.rectangle(0, 0, 520, 120, 0x000000, 0.7) 
             const text = this.add.text(5, -30, this.dialogueScene[0][0], {
                 fontSize: "20px",
                 color: "#ffffff",
                 align: "center",
                 wordWrap: { width: 500 }
-            }).setOrigin(0.5);
+            }).setOrigin(0.5) 
 
             const btn = this.add.text(0, 25, "Continue", {
                 fontSize: "18px",
                 backgroundColor: "#ffffff",
                 color: "#000000",
                 padding: { x: 10, y: 5 }
-            }).setOrigin(0.5).setInteractive();
+            }).setOrigin(0.5).setInteractive() 
 
-            this.dialogueContainer.add([box, text, btn]);
-            this.children.bringToTop(this.dialogueContainer);
+            this.dialogueContainer.add([box, text, btn]) 
+            this.children.bringToTop(this.dialogueContainer) 
 
-            const originalHandleOption = this.handleOption.bind(this);
+            const originalHandleOption = this.handleOption.bind(this) 
 
             btn.on("pointerdown", () => {
                 if (!afterChoice) {
-                    dialogueIndex++;
+                    dialogueIndex++ 
                     if (dialogueIndex < 6) {
-                        text.setText(this.dialogueScene[0][dialogueIndex]);
+                        text.setText(this.dialogueScene[0][dialogueIndex]) 
                     } else if (dialogueIndex === 6) {
-                        this.startOptions();
+                        this.startOptions() 
                         this.handleOption = (optionNumber) => {
-                            this.choice[this.mapX] = optionNumber;
-                            this.optionNumber = optionNumber;
+                            this.choice[this.mapX] = optionNumber 
+                            this.optionNumber = optionNumber 
                             if (this.optionContainer) {
-                                this.optionContainer.destroy();
-                                this.optionContainer = null;
+                                this.optionContainer.destroy() 
+                                this.optionContainer = null 
                             }
-                            branch = this.dialogueScene[optionNumber - 1];
-                            afterChoice = true;
-                            dialogueIndex = 6;
-                            text.setText(branch[dialogueIndex]);
-                        };
+                            branch = this.dialogueScene[optionNumber - 1] 
+                            afterChoice = true 
+                            dialogueIndex = 6 
+                            text.setText(branch[dialogueIndex]) 
+                        } 
                     }
                 } else {
-                    dialogueIndex++;
+                    dialogueIndex++ 
                     if (branch && dialogueIndex < branch.length) {
-                        text.setText(branch[dialogueIndex]);
+                        text.setText(branch[dialogueIndex]) 
                     } else {
-                        this.dialogueContainer.destroy();
-                        this.dialogueContainer = null;
+                        this.dialogueContainer.destroy() 
+                        this.dialogueContainer = null 
                         if (this.optionNumber === 1) {
-                            this.player.setTexture("gloucesterBlind");
+                            this.player.setTexture("gloucesterBlind") 
                         } else {
-                            this.player.setTexture("gloucester");
+                            this.player.setTexture("gloucester") 
                         }
-                        this.isTalking = false;
-                        this.handleOption = originalHandleOption;
+                        this.isTalking = false 
+                        this.handleOption = originalHandleOption 
                     }
                 }
-            });
-            return;
+            }) 
+            return 
         }
 
-        this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6);
+        this.dialogueContainer = this.add.container(sizes.width / 2, sizes.height / 6) 
 
-        const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7);
+        const box = this.add.rectangle(0, 0, 400, 120, 0x000000, 0.7) 
         const text = this.add.text(0, -30, "Regan: Hello Gloucester", {
             fontSize: "20px",
             color: "#ffffff",
             align: "center",
             wordWrap: { width: 380 }
-        }).setOrigin(0.5);
+        }).setOrigin(0.5) 
 
         const btn = this.add.text(0, 25, "Continue", {
             fontSize: "18px",
             backgroundColor: "#ffffff",
             color: "#000000",
             padding: { x: 10, y: 5 }
-        }).setOrigin(0.5).setInteractive();
+        }).setOrigin(0.5).setInteractive() 
 
-        this.dialogueContainer.add([box, text, btn]);
-        this.children.bringToTop(this.dialogueContainer);
+        this.dialogueContainer.add([box, text, btn]) 
+        this.children.bringToTop(this.dialogueContainer) 
 
         btn.on("pointerdown", () => {
-            this.dialogueContainer.destroy();
-            this.dialogueContainer = null;
-            this.isTalking = false;
-        });
+            this.dialogueContainer.destroy() 
+            this.dialogueContainer = null 
+            this.isTalking = false 
+        }) 
     }
 
     handleOption(optionNumber) {
-        this.choice[this.mapX] = optionNumber;
-        this.optionNumber = optionNumber;
+        this.choice[this.mapX] = optionNumber 
+        this.optionNumber = optionNumber 
 
         if (this.optionContainer) {
-            this.optionContainer.destroy();
-            this.optionContainer = null;
+            this.optionContainer.destroy() 
+            this.optionContainer = null 
         }
 
         if (this.mapX === 0) {
-            this.startSpeech(optionNumber);
+            this.startSpeech(optionNumber) 
         }
 
         if (Object.keys(this.choice).filter(k => this.choice[k] != null).length === 2) {
-            this.lock = false;
+            this.lock = false 
         }
     }
 
